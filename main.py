@@ -29,6 +29,8 @@ def str_to_dec(s:str):
     return out
 
 def convert_to_even(input_num : int):
+    if input_num < 1:
+        raise Exception("Numbers must be in range [1, n)")
     n = num_to_bin(input_num)
     # catch edge case
     if len(n) == 1 and n[0] == "1":
