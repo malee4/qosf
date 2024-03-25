@@ -36,28 +36,28 @@ def convert_to_even(input_num : int):
     if len(n) == 1 and n[0] == "1":
         n = n + "0"
 
-    bv_circ = QuantumCircuit(len(n)+1,len(n))
+    circuit = QuantumCircuit(len(n)+1,len(n))
 
-    bv_circ.h(range(len(n)))
-    bv_circ.x(len(n))
-    bv_circ.h(len(n))
+    circuit.h(range(len(n)))
+    circuit.x(len(n))
+    circuit.h(len(n))
 
-    bv_circ.barrier()
+    circuit.barrier()
     first = True
 
     for digit, query in enumerate(reversed(n)):
         if query == "1" and not first:
-            bv_circ.cx(digit, len(n))
+            circuit.cx(digit, len(n))
     
         first = False
-    bv_circ.barrier()
+    circuit.barrier()
 
-    bv_circ.h(range(len(n)))
-    bv_circ.barrier()
-    bv_circ.measure(range(len(n)),range(len(n)))
+    circuit.h(range(len(n)))
+    circuit.barrier()
+    circuit.measure(range(len(n)),range(len(n)))
 
     simulator = AerSimulator()
-    result = simulator.run(transpile(bv_circ, simulator)).result()
+    result = simulator.run(transpile(circuit, simulator)).result()
     data = list(dict(result.get_counts()).keys())[0]
     
     return str_to_dec(data)
